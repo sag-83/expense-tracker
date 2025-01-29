@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your Portfolio</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="/static/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your Portfolio</h1>
+
+      <table>
+        <tr>
+          <th>Stock Symbol</th>
+          <th>Quantity</th>
+          <th>Price per Share</th>
+          <th>Current Price</th>
+          <th>Total Value</th>
+        </tr>
+        {% for stock in stock_data %}
+        <tr>
+          <td>{{ stock.stock_symbol }}</td>
+          <td>{{ stock.quantity }}</td>
+          <td>${{ stock.price_per_share }}</td>
+          <td>${{ stock.current_price }}</td>
+          <td>${{ stock.total_value }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-container">
+      <script type="application/json" id="stock-data">
+        {{ stock_data | tojson }}
+      </script>
+      <canvas id="portfolioChart"></canvas>
+    </div>
+  </body>
+</html>

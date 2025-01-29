@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Business Expense Tracker</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="/static/dashboard.js"></script>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Header -->
+      <h1>💼 Expense Tracker</h1>
+
+      <!-- Summary Cards -->
+      <div class="summary">
+        <div class="card">
+          <h2>Total Income</h2>
+          <p id="totalIncome">$0</p>
+        </div>
+        <div class="card">
+          <h2>Total Expenses</h2>
+          <p id="totalExpenses">$0</p>
+        </div>
+        <div class="card balance">
+          <h2>Remaining Balance</h2>
+          <p id="remainingBalance">$0</p>
+        </div>
+      </div>
+
+      <!-- Input Section -->
+      <div class="input-section">
+        <form id="incomeForm">
+          <input
+            type="number"
+            id="incomeInput"
+            placeholder="Enter Monthly Income ($)"
+            required
+          />
+          <button type="submit">Set Income</button>
+        </form>
+
+        <form action="{{ url_for('add_expense') }}" method="POST">
+          <input
+            type="number"
+            name="amount"
+            placeholder="Expense Amount ($)"
+            required
+          />
+          <input type="text" name="category" placeholder="Category" required />
+          <input type="date" name="date" />
+          <button type="submit">Add Expense</button>
+        </form>
+      </div>
+
+      <!-- Expense Table -->
+      <h2>Expense History</h2>
+      <table>
+        <tr>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+        {% for expense in expenses %}
+        <tr>
+          <td>${{ expense[1] }}</td>
+          <td>{{ expense[2] }}</td>
+          <td>{{ expense[3] }}</td>
+          <td>
+            <form
+              action="{{ url_for('remove_expense', expense_id=expense[0]) }}"
+              method="POST"
+            >
+              <button class="remove-btn" type="submit">Remove</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <!-- 🛠 Moved Graphs to Bottom -->
+      <div class="charts">
+        <canvas id="expenseChart"></canvas>
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <script src="/static/income.js"></script>
+  </body>
+</html>
